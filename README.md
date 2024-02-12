@@ -7,13 +7,13 @@ There are a handful of projects within Wonder.xcodeproj; the first are the Workb
 *Personal interfaces dev kit*
 
 
-With Workbench, you can build and use your own personal, itemized interfaces like the ones in my experiments ([Tag Navigator](https://alexanderobenauer.com/labnotes/exp001/), and [OLLOS](https://alexanderobenauer.com/ollos/)) and [lab notes](https://alexanderobenauer.com/labnotes/000/).
+With Workbench, you can build and use your own personal, itemized interfaces like the ones in my experiments ([OLLOS](https://alexanderobenauer.com/ollos/), and [Tag Navigator](https://alexanderobenauer.com/labnotes/exp001/)) and [lab notes](https://alexanderobenauer.com/labnotes/000/).
 
-Workbench runs as a native app on Apple devices, and syncs data automatically via iCloud.
+Workbench runs as a native app on Mac, iPad, iPhone, and other Apple devices, and syncs data automatically via iCloud.
 
-In it, you can build *providers*, which bring items into your item store from external sources, and *apps*, which are the interfaces you'd like to use with your items — creating, reviewing, and modifying them. You can also build new *item views*, for new and existing item types, which are provided to existing apps and other views (this is a simple way to extend interfaces in Workbench and to add new functionality to existing items and views).
+In it, you can build *providers*, which bring items into your item store from external sources, and *apps*, which are the interfaces you'd like to use with your items — creating, reviewing, and modifying them. You can also build new *item views*, for new and existing item types, which are provided to existing apps and other views (this is a simple way to extend interfaces in Workbench, adding new functionality to existing items and views).
 
-Workbench comes with some starter providers and apps that you can use or modify. If you build something cool, send a pull request — more providers, apps, and item views help show what's possible in Workbench. 
+Workbench comes with some starter providers and apps that you can use or modify. If you build something interesting, submit a pull request; more providers, apps, and item views help show what's possible in Workbench.
 
 This document guides you through building your own personal software in Workbench on top of its item store.
 
@@ -51,11 +51,11 @@ ItemStore.shared.insert(facts: [
 ])
 ```
 
-This is more efficient, because interfaces only receive one update notification; and it is more correct, because these items are given the same timestamp, which is considered by some apps when grouping facts to describe changes over time.
+This is more efficient because interfaces only receive one update notification, and it is more correct because these facts are given the same timestamp, which is considered by some views when grouping facts to describe changes over time.
 
 ### Create items
 
-The item store provides some helper functions for common operations which handle lots of little expectations that apps can rely on.
+The item store provides some helper functions for common operations which automatically take care of setting up facts that apps can expect to rely on.
 
 For example, you should use this function whenever you create a new item:
 
@@ -68,9 +68,9 @@ ItemStore.shared.createItem(
 )
 ```
 
-This function inserts a handful of facts needed to "create" an item: it ensures that there's a "created" fact for new items which apps can rely on, and it ensures you provide a type for each item, which helps Workbench find the right item views in apps that don't do custom rendering for items (more on that later).
+This function inserts a handful of facts needed to "create" an item: it ensures that there's a timestamped "created" fact for new items, and it ensures that a type is provided for each item, which helps Workbench find the right item views in apps that don't do custom rendering for items (more on that later).
 
-This function also has some optional parameters that can help creating items with lots of detail more concise.
+This function also has some optional parameters that can help creating items with more detail.
 
 ### Relate items
 
@@ -87,15 +87,15 @@ ItemStore.shared.relateItems(
 )
 ```
 
-This function inserts all the facts needed for a "relationship" item, which describes the relationship between two items. This lets us make a graph of items — we can now have a "list" item with "todo" items in it, or we can build full-fledged PKM apps.
+This function inserts all the facts needed for a "reference" item, which describes the relationship between two items. This lets us make a graph of items — we can now have a "list" item with "todo" items in it, or we can build full-fledged PKM apps.
 
-And by the way, the `createItem` function has parameters for setting up relationships when creating items.
+Note: the `createItem` function has parameters for setting up relationships when creating items.
 
-Also, both of these function provide static counterparts on `ItemStore` that just provide the facts that are inserted when the above functions are called. These can be useful when you need to insert other facts at the same time.
+Another note: both of these function provide static counterparts on `ItemStore` that just provide the facts that are to be inserted when the above functions are called. These can be useful when you need to insert other facts at the same time in addition to these.
 
 ### Fetch facts
 
-There are a few ways to fetch facts. Using this function:
+There are a few ways to fetch facts. This function is the first way:
 
 ```Swift
 func fetchFacts(
@@ -107,7 +107,7 @@ func fetchFacts(
 ) -> [Fact]
 ```
 
-You can provide any combination of the parameters to the `fetchFacts` function:
+You can provide any combination of the parameters to this `fetchFacts` function, for example:
 
 ```Swift
 var facts: [Fact];
@@ -168,13 +168,13 @@ This can be helpful when assembling timelines.
 
 ### Overfetching & efficient queries
 
-These fetch functions are intentionally basic for now. To do more complex querying, overfetch and filter in memory.
+These fetch functions are intentionally basic for now. To do more complex querying, overfetch and filter.
 
-But be more specific wherever you can; interface elements only need to reload when facts they care about have new values. 
+However, be specific with where your fetching happens; interface elements only need to reload when facts they care about have new values. One of the benefits of the item store being a list of facts is that views can subscribe to updates of specific attributes on an item, rather than having to fetch and watch an entire item and all of its attributes.
 
-For example, fetching all of an item's facts in one view means the entire view must reload whenever the item has any new facts; fetching specific attributes for that item in subviews means each subview only needs to refresh when the attribute it renders has new values.
+Fetching all of an item's facts in one view means the entire view (and its subviews) must reload whenever the item has any new facts; fetching specific attributes for that item in subviews means each subview only needs to refresh when the attribute it renders has new values.
 
-This becomes most important at the scale of many items: instead of fetching all the facts about all the items your view cares about in one go, push more precise fetches lower in the view tree for a performance benefit. (Of course, sometimes this is unavoidable, when lots of pre-processing needs to be done at the level of a superview.)
+This becomes most important at the scale of many items: instead of fetching all the facts about all the items your view cares about in one go, push more precise fetches lower in the view tree for a performance benefit. (Of course, sometimes this is unavoidable, when lots of pre-processing needs to be done at the level of a superview.) There's a design pattern, "view components," that makes this easier (more on that shortly).
 
 ### Delete facts
 
@@ -203,7 +203,7 @@ func deleteFact(_ fact: Fact) {
 }
 ```
 
-This means you can "delete" a "deletion" fact to undo its effect.
+This means you can "delete" a "deletion" fact to undo its effect. (You can also re-insert a new version of the original fact to undo the deletion, with only its timestamp updated.)
 
 ### Delete items
 
@@ -213,7 +213,7 @@ You can also delete whole items like so:
 ItemStore.shared.deleteItem(itemId: "1")
 ```
 
-This is more storage efficient and more correct than deleting all of the facts that describe an item because the item store internally handles only storing one fact that describes the item as deleted, and provides the appropriate "deleted" facts at runtime. This is more correct than deleting all known facts about an item manually since older facts about the item might sync from another device later, and would not be marked as deleted as expected. By calling `deleteItem`, the item store takes care of this edge case for you.
+This is more storage efficient and more correct than deleting all of the facts that describe an item. The item store internally handles storing one fact that describes the item as deleted, and provides all the appropriate "deleted" facts at runtime for any prior facts about that item. This is more correct than deleting all known facts about an item manually since older facts about the item might sync from another device later, and would not be marked as deleted as expected. By calling `deleteItem`, the item store takes care of this edge case for you.
 
 You can also provide a successor item when deleting an item:
 
@@ -248,24 +248,24 @@ The item store is made up of *item drives,* which each store a subset of the fac
 
 There is a *user drive* where facts about items the user creates are stored. In Workbench, this drive uses the CoreData implementation and syncs using CloudKit.
 
-Then there are *resource drives* where most facts from providers belong. These drives use the SQLite implementation, and some providers use these in-memory when their contents need to be wholesale imported at runtime (more on this later).
+Then there are *resource drives* where most facts from providers belong. These drives use the SQLite implementation, and some providers use these in memory, when their contents need to be wholesale imported at runtime (more on this later).
 
 If you don't provide a resource identifier when inserting facts (using any of the functions that do so), your fact will be inserted into the user drive, and in Workbench, ~irreversibly synced via iCloud.
 
-Instead, during initial development, and in most providers, you should use a resource drive. This lets you store the database in memory or delete the resulting SQLite database whenever you're done with it.
+Instead, during initial development, and in most providers, you should use a resource drive. This lets you store the database in memory or delete the resulting SQLite database from your filesystem whenever you'd like.
 
-Every function that inserts facts has an optional "resource" parameter that your providers should almost always use. (Functions that fetch facts also have a "resource" parameter that can be provided to make fetching more efficient.)
+Every function that inserts facts has an optional "resource" parameter that your providers should use. (Functions that fetch facts also have a "resource" parameter that can be provided to make fetching more efficient.)
 
 **Creating new drive implementations** 
 
-You can create your own drive implementation with its own storage, syncing, or querying strategy if you'd like. It just needs to conform to the `ItemDrive` protocol which requires only the basic fact functions.
+You can create your own drive implementation with its own storage, syncing, or querying strategy if you'd like. It must conform to the `ItemDrive` protocol, which requires a few basic fact functions for insertions and queries.
 
 
 ## Building new things in Workbench
 
-Workbench doesn't enforce any particular protocol. When you want to interact with the item store, you simply call the above functions. You can technically build anything you want, in any way you want.
+You can build anything you'd like into Workbench simply by interacting with the item store, using the above functions.
 
-However, it's helpful to think of two primary types of things you might add to Workbench: providers and apps. (There are some others we'll cover, like default item views, which can be a helpful way to extend your system by supplying new interfaces to be used in existing apps.)
+However, it's helpful to think of a few distinct types of things you might add to Workbench: providers, apps / views, and item defaults.
 
 ## Providers
 
@@ -273,7 +273,7 @@ Providers bring items from external soruces into your item store.
 
 Whenever they vend many items, such as a list of the events on your calendar, providers should store all of their items in a resource drive.
 
-To add a new provider, create a new file in Workbench/Providers. Here's a starter:
+To add a new provider, create a new file in `Workbench/Providers`. Here's a starter:
 
 ```Swift
 import SwiftUI
@@ -340,15 +340,15 @@ Here are some considerations:
 
 ### Use resource drives
 
-Providers should use resource drives, as described above. For example, in `EventsProvider`, we fetch the calendar events using the system's EventKit API. We don't want or need to store this data in the synced, on-disk user drive; this data is already stored locally! Instead, our provider uses an in-memory resource drive in the item store to store its facts.
+Providers should use resource drives, as described above. For example, in `EventsProvider`, we fetch the calendar events using the system's EventKit API. We don't want or need to store this data in the cloud-synced user drive; this data is already stored locally, and it's already synced to other devices by the OS. Instead, our provider uses an in-memory resource drive in the item store to store its facts.
 
-There are times when providers should store items in the user drive, and that's generally when we've manually requested or saved a specific item during use. E.g. when requesting a weather forecast for our current location, or when saving an email to a specific location in our graph (the email provider keeps incoming emails in an in-memory resource drive, but can save an email to the user drive when we want to pin it into our timeline, or use it in other kinds of organizations within our item graph).
+There are times when providers should store items in the user drive, and that's generally when we've manually requested or saved a specific item during use. E.g. when requesting a weather forecast for our current location, or when saving an email to a specific location in our graph (the email provider keeps incoming emails in an in-memory resource drive, but can save an email to the user drive when we want to pin it into our timeline, or use it in other kinds of organizations within our item graph). See an example of this in the `CurrentLocationProvider`, which stores a location check-in whenever we request one.
 
 ### In-memory drives
 
 Most of the external world doesn't think in terms of facts about items. When an API doesn't let you get this kind of granular information, you'll have to consider your syncing strategy: how will you update the item store when changes happen, based on how your external source provides data?
 
-For example, in `EventsProvider`, you'll see that we get the local device's calendar events and insert them into an in-memory resource drive. Why is it in memory? Because we only get events from the EventKit API in big heaps, filtered down only by calendar and date/time. There's no way to get "changes" like we'd write them in the fact store. Rather than diffing what comes in against the existing data in the event provider's resource drive, which would also be a valid strategy, whenever there's an update from the EventKit API, the in-memory database is simply cleared and re-filled.
+In `EventsProvider`, you'll see that we get the local device's calendar events and insert them into an in-memory resource drive. We do this because we only get events from the EventKit API in big heaps, filtered down only by calendar and date/time. There's no way to get "changes" like we'd write them in the fact store. Rather than diffing what comes in against the existing data in the event provider's resource drive (which would also be a valid strategy, with its own holes), whenever there's an update from the EventKit API, the in-memory database is simply cleared and re-filled.
 
 
 ## Apps
@@ -397,7 +397,7 @@ Note that when using SwiftUI, things are more performant when you break your vie
 
 ### Subscribers
 
-In order to have updates to your queries automatically re-render the views that depend on them, the item store providers `ItemStoreSubscriber`, and some generic implementations that make things easy.
+In order to have updates to your queries automatically re-render the views that depend on them, the item store provides `ItemStoreSubscriber`, and some generic implementations that make things easy.
 
 Here we use `SimpleItemStoreSubscriber`, an implementation that lets us provide our item store query as a function that will automatically be re-called any time new facts are available:
 
@@ -421,17 +421,11 @@ struct TextView: View {
 }
 ```
 
-Note that you likely won't hardcode item IDs.
+*Note that you likely won't hardcode item IDs.*
 
 This view depends on the result of a `fetchFacts` query, and will be re-rendered whenever it changes.
 
-
-
-You can also implement your own `ItemStoreSubscriber` to get better performance in more complex situations. 
-
-In the above example, the `fetchFacts` call has to be re-run every time the item store has updates in order to see if the view needs to be re-rendered with new data.
-
-When this isn't performant, we can implement our own `ItemStoreSubscriber`. An example of this can be seen in `Workbench/Apps/Timeline.swift`, where our timeline view creates `ActivityListSubscriber`.
+You can also implement your own `ItemStoreSubscriber` to get better performance in more complex situations. In the above example, the `fetchFacts` call has to be re-run every time the item store has updates in order to see if the view needs to be re-rendered with new data. When this isn't performant, we can implement our own `ItemStoreSubscriber`. An example of this can be seen in `Workbench/Apps/Timeline.swift`, where our timeline view creates `ActivityListSubscriber`.
 
 Here's a starter implementation of an `ItemStoreSubscriber` and a view that will use it:
 
@@ -478,9 +472,36 @@ Implementations of `ItemStoreSubscriber` have to subscribe to, and unsubscribe f
 
 The `newFacts` function is where the magic starts: this function is called every time the item store has a new batch of facts. This function can use that new batch of facts to update the data that the view needs (which can be done either by running `fetchFacts` functions again, or modifying the data based on just the new facts that have been provided).
 
+### Subscriber helpers
+
+**`ItemStoreValue`** is a SwiftUI view that takes a function which returns a value and a function which receives that value when it is non-nil and returns another SwiftUI view. Internally, it handles subscribing to the item store and reloading when there are applicable changes. This lets you write something simple, like:
+
+```Swift
+struct VCText: View {
+    let itemId: String
+    let attribute: String
+    var defaultText: String? = nil
+    
+    var body: some View {
+        ItemStoreValue {
+            ItemStore.shared.fetchFacts(
+                itemId: itemId,
+                attribute: attribute
+            ).first?.typedValue?.stringValue ?? defaultText
+        } content: { text in
+            Text(text)
+        }
+    }
+}
+```
+
+No need for subscriptions, state objects, etc. The content view will be rendered with the most up-to-date result of the function provided, and hides whenever that result is `nil`. You can use this in any app, item view, or view component. It works well for read-only components.
+
+**`ItemStoreBinding`** is similar, but it also lets you provide a setter function, and it gives a two-way binding for the value to your subview.
+
 ### View components
 
-Workbench provides shared view components which internally handle all of the subscriptions they need. This makes it easy to get started: you could build initial interfaces with pre-made view components, and only replace them as needed.
+Workbench provides shared view components which internally handle all of the subscriptions they need. This makes it easy to get started: you could build initial interfaces with pre-made view components, and only replace them as needed. This is a design pattern that I've found helpful when constructing many itemized views.
 
 Some view components are basic, only needing to be provided with an item ID and an attribute that they'll use on that item to store their state. For example:
 
@@ -499,27 +520,27 @@ struct TodoItemView: View {
 
 The view components `VCCheckbox` and `VCTextInput` are used. They handle all the interactions with the item store internally, subscribing to the fact that they'll use to store their state, and submitting new facts when the user interacts with them.
 
-These kinds of basic, one-attribute view components start with `VC` at the beginning of their names, which makes lookup easy while developing views.
+These kinds of basic, single-attribute view components start with `VC` at the beginning of their names, which makes lookup easy while developing views.
 
-You can create new view components in `Workbench/Shared/View Components`, which makes sharing common interface elements among many apps and views easier.
+You can create new view components in `Workbench/Views`, which makes sharing common interface elements among many apps and views easier.
 
 Some view components are bigger, handling many attributes of an item, or even the relationships between an item and others.
 
 For example, `RefList` is provided with a `fromItemId`, and displays a modifiable outliner of the item's outgoing relationships (or "child items").
 
-It does so using default item views for each type of item it finds. 
+It does so using default item views for each type of item it finds. More on how to build new default item views shortly.
 
 Another example is `RefCanvas` which lays out child items in a 2D canvas, and correctly stores the positions in the relationship item. It also uses the default item views for each type of item it finds.
 
-Check out the other view components provided in `Workbench/Shared/View Components` — you often only need to provide an item ID, and let the view component do the rest. 
+Check out the other view components provided in `Workbench/Views` — you often only need to provide an item ID, and let the view component do the rest. 
 
 ### Item views
 
-Many view components and apps use `ItemView`, which automatically finds an appropriate default view for rendering each item, based on type.
+Many apps and views use `ItemView`, which automatically finds an appropriate default view for rendering each item, based on type.
 
 By providing a default item view for a new kind of item, you can essentially inject that new interface into many existing views where items of your new type may appear, such as the Timeline.
 
-To add a new item view, create a new file in `Workbench/Shared/Item Views`. In that file, create a class that conforms to the `ItemDefaults` protocol. Here's a starter:
+To add a new item view, create a new file in `Workbench/Item Defaults`. In that file, create a class that conforms to the `ItemDefaults` protocol. Here's a starter:
 
 ```Swift
 import SwiftUI
@@ -555,7 +576,7 @@ fileprivate struct YourItemView: View {
 }
 ```
 
-Then, in `Workbench/Shared/View Components/ItemView.swift`, add your class to the `itemDefaults` dictionary, with a key that matches the item type your class describes the defaults for:
+Then, in `Workbench/Views/ItemView.swift`, add your class to the `itemDefaults` dictionary, with a key that matches the item type your class describes the defaults for:
 
 ```Swift
 let itemDefaults: [String: ItemDefaults.Type] = [
@@ -612,40 +633,13 @@ This app is a simple clipboard of things added to it.
 
 It takes an `itemId` parameter, just like an item view. And in fact, that's what it is — an item view that displays any item's outgoing relationships (child items), and that lets us add new items to this list.
 
-By taking an `itemId` parameter, instead of either hard-coding an item ID or displaying items from the entire graph, this view can be used to focus on any usbset of the graph, such as to recursively focus on items found within it (i.e. making a child item the new primary item in the view, to see its own children more easily).
+By taking an `itemId` parameter, instead of either hard-coding an item ID or displaying items from the entire graph, this view can be used to focus on any subset of the graph, such as to recursively focus on items found within it (i.e. making a child item the new primary item in the view, to focus on its own children).
 
 At the time of this writing, the Timeline app is not written this way; instead, it looks at *all* of the items in the item store. This has nice performance benefits, as it can use simpler queries, but it means that we can't use it to look at the timeline of a subsection of our graph.
 
-It's usually preferable to write apps that set their scope based on a root item, as is the case in Folio, rather than on type, as is somewhat the case in Timeline. This allows us more flexibility when using our apps and when managing the organization of the items in our graphs.
+It's usually preferable to write apps that set their scope based on a root item, as is the case in Folio, rather than on type, as is the case in Timeline. This allows us more flexibility when using our apps and when managing the organization of the items in our graphs.
 
 So, essentially, many of our apps are simply full-screen item views that we can use on any item.
-
-### Other helpers
-
-**`ItemStoreValue`** is a SwiftUI view that takes a function which returns a value and a function which receives that value when it is non-nil and returns another SwiftUI view. Internally, it handles subscribing to the item store and reloading when there are applicable changes. This lets you write something simple, like:
-
-```Swift
-struct VCText: View {
-    let itemId: String
-    let attribute: String
-    var defaultText: String? = nil
-    
-    var body: some View {
-        ItemStoreValue {
-            ItemStore.shared.fetchFacts(
-                itemId: itemId,
-                attribute: attribute
-            ).first?.typedValue?.stringValue ?? defaultText
-        } content: { text in
-            Text(text)
-        }
-    }
-}
-```
-
-No need for subscriptions, state objects, etc. The content view will be rendered with the most up-to-date result of the function provided, and hides whenever that result is `nil`. You can use this in any app, item view, or view component. It works well for read-only components.
-
-**`ItemStoreBinding`** is similar, but it also lets you provide a setter function, and it gives a two-way binding to your subview.
 
 
 ## Contribute

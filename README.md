@@ -1,8 +1,11 @@
+There are a handful of projects within Wonder.xcodeproj; the first are the Workbench app and the item store, described here:
+
+---
+
 # Workbench
 
 *Personal interfaces dev kit*
 
----
 
 With Workbench, you can build and use your own personal, itemized interfaces like the ones in my experiments ([Tag Navigator](https://alexanderobenauer.com/labnotes/exp001/), and [OLLOS](https://alexanderobenauer.com/ollos/)) and [lab notes](https://alexanderobenauer.com/labnotes/000/).
 

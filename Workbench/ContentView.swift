@@ -21,7 +21,7 @@ struct ContentView: View {
         // Apps that are really super item views; looking at an item at a time, and its relationships
         "Folio": Folio(itemId: "folio"),
         "Canvas": Canvas(itemId: "folio"),
-        "Workbench": Workbench(itemId: ItemStore.rootId()),
+        "Drafting Table": DraftingTable(itemId: ItemStore.rootId()),
         
         // System-wide apps that look at all items/facts in the store
         //  (they could be developed a little further to match the above, but sometimes with an undesirable performance penalty)

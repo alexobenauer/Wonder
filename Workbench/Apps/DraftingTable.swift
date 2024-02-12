@@ -1,5 +1,5 @@
 //
-//  Workbench.swift
+//  DraftingTable.swift
 //  Workbench
 //
 //  Created by Alexander Obenauer on 2/1/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate class WorkbenchStore: ItemStoreSubscriber, ObservableObject {
+fileprivate class DraftingTableStore: ItemStoreSubscriber, ObservableObject {
     init(itemId: String) {
         self.itemId = itemId
         self.unsubscribe = ItemStore.shared.subscribeToNewFacts(self)
@@ -94,14 +94,14 @@ fileprivate class WorkbenchStore: ItemStoreSubscriber, ObservableObject {
     }
 }
 
-struct Workbench: View {
+struct DraftingTable: View {
     init(itemId: String) {
         self.itemId = itemId
-        self._store = StateObject(wrappedValue: WorkbenchStore(itemId: itemId))
+        self._store = StateObject(wrappedValue: DraftingTableStore(itemId: itemId))
     }
     
     var itemId: String
-    @StateObject private var store: WorkbenchStore
+    @StateObject private var store: DraftingTableStore
     
     var body: some View {
         ScrollView {
@@ -131,5 +131,5 @@ struct Workbench: View {
 }
 
 #Preview {
-    Workbench(itemId: "")
+    DraftingTable(itemId: "")
 }

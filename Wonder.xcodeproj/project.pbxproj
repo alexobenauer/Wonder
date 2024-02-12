@@ -11,7 +11,7 @@
 		320B21372B7670AE00A39ECB /* CurrentLocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320B21362B7670AE00A39ECB /* CurrentLocationProvider.swift */; };
 		320B21392B76751400A39ECB /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320B21382B76751400A39ECB /* LocationItem.swift */; };
 		3291FE682B767EDF00DB1673 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3291FE672B767EDF00DB1673 /* Canvas.swift */; };
-		3291FE6A2B76830400DB1673 /* ItemDefaultsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3291FE692B76830400DB1673 /* ItemDefaultsProtocol.swift */; };
+		3291FE6A2B76830400DB1673 /* ItemDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3291FE692B76830400DB1673 /* ItemDefaults.swift */; };
 		32A7D8A82B6BAD5200FFBDCE /* WorkbenchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A7D8A72B6BAD5200FFBDCE /* WorkbenchApp.swift */; };
 		32A7D8AA2B6BAD5200FFBDCE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A7D8A92B6BAD5200FFBDCE /* ContentView.swift */; };
 		32A7D8AE2B6BAD5600FFBDCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32A7D8AD2B6BAD5600FFBDCE /* Assets.xcassets */; };
@@ -40,7 +40,7 @@
 		32A7D8D02B6BAFCE00FFBDCE /* sldrive.c in Sources */ = {isa = PBXBuildFile; fileRef = 320ACBC32B3C4662000AB37D /* sldrive.c */; };
 		32A7D8DE2B6BFF3C00FFBDCE /* FactExplorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A7D8DD2B6BFF3C00FFBDCE /* FactExplorer.swift */; };
 		32B717BE2B6C107C00E9CBA4 /* ItemExplorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B717BD2B6C107C00E9CBA4 /* ItemExplorer.swift */; };
-		32B717C02B6C1BA900E9CBA4 /* Workbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B717BF2B6C1BA900E9CBA4 /* Workbench.swift */; };
+		32B717C02B6C1BA900E9CBA4 /* DraftingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B717BF2B6C1BA900E9CBA4 /* DraftingTable.swift */; };
 		32B717C22B6D456C00E9CBA4 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B717C12B6D456C00E9CBA4 /* Timeline.swift */; };
 		32B717E72B6EC0DE00E9CBA4 /* VCTimestampText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B717E62B6EC0DE00E9CBA4 /* VCTimestampText.swift */; };
 		32B718122B6FF9D000E9CBA4 /* RefCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B718112B6FF9D000E9CBA4 /* RefCanvas.swift */; };
@@ -73,7 +73,7 @@
 		320B21382B76751400A39ECB /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
 		326EEC112B5E712E002F8FA0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		3291FE672B767EDF00DB1673 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
-		3291FE692B76830400DB1673 /* ItemDefaultsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDefaultsProtocol.swift; sourceTree = "<group>"; };
+		3291FE692B76830400DB1673 /* ItemDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDefaults.swift; sourceTree = "<group>"; };
 		32A7D8882B64FE6F00FFBDCE /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		32A7D88A2B6502B100FFBDCE /* NoteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteItem.swift; sourceTree = "<group>"; };
 		32A7D88C2B65050100FFBDCE /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		32A7D8DC2B6BB61200FFBDCE /* Workbench-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Workbench-Bridging-Header.h"; sourceTree = "<group>"; };
 		32A7D8DD2B6BFF3C00FFBDCE /* FactExplorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactExplorer.swift; sourceTree = "<group>"; };
 		32B717BD2B6C107C00E9CBA4 /* ItemExplorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemExplorer.swift; sourceTree = "<group>"; };
-		32B717BF2B6C1BA900E9CBA4 /* Workbench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workbench.swift; sourceTree = "<group>"; };
+		32B717BF2B6C1BA900E9CBA4 /* DraftingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftingTable.swift; sourceTree = "<group>"; };
 		32B717C12B6D456C00E9CBA4 /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		32B717E62B6EC0DE00E9CBA4 /* VCTimestampText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCTimestampText.swift; sourceTree = "<group>"; };
 		32B718112B6FF9D000E9CBA4 /* RefCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefCanvas.swift; sourceTree = "<group>"; };
@@ -167,21 +167,21 @@
 			path = "ItemStore - Swift";
 			sourceTree = "<group>";
 		};
-		32A7D8902B65057B00FFBDCE /* Item Views */ = {
+		32A7D8902B65057B00FFBDCE /* Item Defaults */ = {
 			isa = PBXGroup;
 			children = (
+				3291FE692B76830400DB1673 /* ItemDefaults.swift */,
 				32A7D88A2B6502B100FFBDCE /* NoteItem.swift */,
 				32A7D88E2B65050600FFBDCE /* LinkItem.swift */,
 				32A7D88C2B65050100FFBDCE /* TodoItem.swift */,
 				32B718512B753F4100E9CBA4 /* EventItem.swift */,
 				320B21382B76751400A39ECB /* LocationItem.swift */,
 				320B21342B766B7A00A39ECB /* GenericItemView.swift */,
-				3291FE692B76830400DB1673 /* ItemDefaultsProtocol.swift */,
 			);
-			path = "Item Views";
+			path = "Item Defaults";
 			sourceTree = "<group>";
 		};
-		32A7D8912B65058500FFBDCE /* View Components */ = {
+		32A7D8912B65058500FFBDCE /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				32DF62CA2B5EE7B600F5314D /* PromptInput.swift */,
@@ -202,7 +202,7 @@
 				32A7D8942B65072F00FFBDCE /* VCCheckbox.swift */,
 				32A7D8962B650B9F00FFBDCE /* VCLink.swift */,
 			);
-			path = "View Components";
+			path = Views;
 			sourceTree = "<group>";
 		};
 		32A7D8A62B6BAD5200FFBDCE /* Workbench */ = {
@@ -210,7 +210,8 @@
 			children = (
 				32A7D8A72B6BAD5200FFBDCE /* WorkbenchApp.swift */,
 				32A7D8A92B6BAD5200FFBDCE /* ContentView.swift */,
-				32A7D8BB2B6BAF8000FFBDCE /* Shared */,
+				32A7D8902B65057B00FFBDCE /* Item Defaults */,
+				32A7D8912B65058500FFBDCE /* Views */,
 				32A7D8B72B6BAD6D00FFBDCE /* Apps */,
 				32A7D8B82B6BAD7400FFBDCE /* Providers */,
 				32A7D8DC2B6BB61200FFBDCE /* Workbench-Bridging-Header.h */,
@@ -234,7 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				32A7D8B92B6BAF7400FFBDCE /* Folio.swift */,
-				32B717BF2B6C1BA900E9CBA4 /* Workbench.swift */,
+				32B717BF2B6C1BA900E9CBA4 /* DraftingTable.swift */,
 				32B717C12B6D456C00E9CBA4 /* Timeline.swift */,
 				32A7D8DD2B6BFF3C00FFBDCE /* FactExplorer.swift */,
 				32B717BD2B6C107C00E9CBA4 /* ItemExplorer.swift */,
@@ -251,15 +252,6 @@
 				320B21362B7670AE00A39ECB /* CurrentLocationProvider.swift */,
 			);
 			path = Providers;
-			sourceTree = "<group>";
-		};
-		32A7D8BB2B6BAF8000FFBDCE /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				32A7D8902B65057B00FFBDCE /* Item Views */,
-				32A7D8912B65058500FFBDCE /* View Components */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 		32B262FD2B33A58B00755215 = {
@@ -371,12 +363,12 @@
 				32A7D8D02B6BAFCE00FFBDCE /* sldrive.c in Sources */,
 				320B21392B76751400A39ECB /* LocationItem.swift in Sources */,
 				32B7183D2B7139D800E9CBA4 /* VCTextMultilineInput.swift in Sources */,
-				32B717C02B6C1BA900E9CBA4 /* Workbench.swift in Sources */,
+				32B717C02B6C1BA900E9CBA4 /* DraftingTable.swift in Sources */,
 				32A7D8CA2B6BAFBF00FFBDCE /* SLDrive.swift in Sources */,
 				32B718402B71693E00E9CBA4 /* ItemSelector.swift in Sources */,
 				32A7D8CC2B6BAFBF00FFBDCE /* CKDrive.swift in Sources */,
 				3291FE682B767EDF00DB1673 /* Canvas.swift in Sources */,
-				3291FE6A2B76830400DB1673 /* ItemDefaultsProtocol.swift in Sources */,
+				3291FE6A2B76830400DB1673 /* ItemDefaults.swift in Sources */,
 				32B718312B700E4000E9CBA4 /* RefHeader.swift in Sources */,
 				32A7D8C22B6BAFB000FFBDCE /* RefList.swift in Sources */,
 				32B7184F2B752FF600E9CBA4 /* Agenda.swift in Sources */,
